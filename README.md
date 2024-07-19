@@ -1,4 +1,4 @@
-# kokokoko.nvim
+kokokoko.nvim
 ================================================================================
 Something to visualize cursor moving.
 
