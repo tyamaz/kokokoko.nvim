@@ -1,8 +1,9 @@
 local timer_util = require("kokokoko.timer_util")
+local sign = require("kokokoko.sign_define")
 local M = {}
 
 --- 対象行が折りたたまれているか否か
---- @param bufnr any 対象のバッファ
+--- @param buffer any 対象のバッファ
 --- @param line any 対象の行 1 始まり
 --- @return unknown
 local function is_folded(buffer, line)
@@ -46,7 +47,7 @@ local function render_one(buffer, lnum, sign, priority, delay)
       priority = priority,  -- priority 指定 数字がデカいほど優先で描画される
     }
   )
-  
+
   -- 指定秒後に勝手に消す
   timer_util.setTimeout(
       function()
@@ -73,13 +74,9 @@ function M.render(buffer, lnum, speed)
   -- 優先度の高いサインほど描画されている時間を短く指定しているので
   -- 優先度高 → 低 に向かって表示が切り替わるかのように表示される
   -- つまりアニメーションする
-  render_one(buffer, lnum, "kokokoko_current_1", base_priority + 9, koma_msec)
-  render_one(buffer, lnum, "kokokoko_current_2", base_priority + 8, koma_msec * 2)
-  render_one(buffer, lnum, "kokokoko_current_3", base_priority + 7, koma_msec * 3)
-  render_one(buffer, lnum, "kokokoko_current_4", base_priority + 6, koma_msec * 4)
-  render_one(buffer, lnum, "kokokoko_current_5", base_priority + 5, koma_msec * 5)
-  render_one(buffer, lnum, "kokokoko_current_6", base_priority + 4, koma_msec * 6)
-  render_one(buffer, lnum, "kokokoko_current_7", base_priority + 3, koma_msec * 7)
+  for i = 1, 7, 1 do
+    render_one(buffer, lnum, sign.get_point_sign_name("default", i), base_priority + 8 - i, koma_msec * i)
+  end
 end
 
 --- from to を指定してその間を連続的にカーソルの軌跡を示すためのサインを描画する

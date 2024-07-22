@@ -1,26 +1,47 @@
 --- サインを定義するモジュール
-local M = {}
+local M = {
+}
+
+local KOKOKOKO_SIGN = {
+  default = {
+    { shape = '󰝥', color = '#E60012',},
+    { shape = '󰝥', color = '#F39800',},
+    { shape = '●', color = '#FFF100',},
+    { shape = '•', color = '#009944',},
+    { shape = '•', color = '#0068B7',},
+    { shape = '∙', color = '#1D2088',},
+    { shape = '∙', color = '#920783',},
+  },
+};
+
 
 
 function M.setup()
-  vim.api.nvim_set_hl(0, 'KokokokoCurrent', { bg = nil, fg = '#E60012', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentRed', { bg = nil, fg = '#E60012', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentOrange', { bg = nil, fg = '#F39800', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentYellow', { bg = nil, fg = '#FFF100', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentGreen', { bg = nil, fg = '#009944', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentAqua', { bg = nil, fg = '#0068B7', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentBlue', { bg = nil, fg = '#1D2088', default = true })
-  vim.api.nvim_set_hl(0, 'KokokokoCurrentPurple', { bg = nil, fg = '#920783', default = true })
-
   vim.fn.sign_define('kokokoko_dummy', { text = " ", texthl = nil, linehl = nil, })
   vim.fn.sign_define('kokokoko_current_0', { text = "▷", texthl = nil, linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_1', { text = '󰝥', texthl = "KokokokoCurrentRed", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_2', { text = '󰝥', texthl = "KokokokoCurrentOrange", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_3', { text = '●', texthl = "KokokokoCurrentYellow", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_4', { text = '•', texthl = "KokokokoCurrentGreen", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_5', { text = '•', texthl = "KokokokoCurrentAqua", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_6', { text = '∙', texthl = "KokokokoCurrentBlue", linehl = nil, })
-  vim.fn.sign_define('kokokoko_current_7', { text = '∙', texthl = "KokokokoCurrentPurple", linehl = nil, })
+  vim.api.nvim_set_hl(0, 'KokokokoCurrent', { bg = nil, fg = '#E60012', default = true })
+
+  local sign_name = "default"
+
+  for i = 1, 7, 1 do
+      vim.api.nvim_set_hl(0, 'KokokokoColor' .. sign_name .. i, { bg = nil, fg = KOKOKOKO_SIGN[sign_name][i]["color"], default = true })
+  end
+
+  -- Lua のテーブルの index は 1 からスタートする
+  -- defalut で作る
+  for i = 1, 7, 1 do
+    vim.fn.sign_define(
+      "kokokoko_sign_" .. sign_name .. "_" .. i,
+      {
+        text = KOKOKOKO_SIGN[sign_name][i]["shape"],
+        texthl = "KokokokoColor" .. sign_name .. i,
+        linehl = nil,
+      })
+  end
+end
+
+function M.get_point_sign_name(_type, _n)
+  return 'kokokoko_sign_' .. _type .. "_"  .. _n
 end
 
 return M
