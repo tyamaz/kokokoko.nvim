@@ -23,7 +23,9 @@ Install
 {
   "tyamaz/kokokoko.nvim",
   config = function()
-    require("kokokoko").setup()
+    require("kokokoko").setup({
+      speed = 300
+    })
   end
 }
 ```
