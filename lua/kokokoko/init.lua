@@ -20,6 +20,11 @@ function M.setup(args)
   vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'TermLeave' }, {
     group = 'kokokoko',
     callback = function()
+      -- plugin 関係のバッファを無視する
+     if vim.bo.filetype == 'lazy' then
+        return
+     end
+
       -- 戻った瞬間の位置を1個前の位置として記録する
       vim.api.nvim_buf_set_var(0, 'kokokoko_prev_lnum', vim.fn.line('.'))
       -- その対象のバッファ変数が存在するか確認する
@@ -37,6 +42,10 @@ function M.setup(args)
     {
       group = 'kokokoko',
       callback = function()
+          -- plugin 関係のバッファを無視する
+         if vim.bo.filetype == 'lazy' then
+            return
+         end
         local cb = vim.api.nvim_get_current_buf()
         local prev_lnum = vim.api.nvim_buf_get_var(0, 'kokokoko_prev_lnum')
         local curt_lnum = vim.fn.line('.')
