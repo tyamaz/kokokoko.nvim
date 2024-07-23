@@ -12,7 +12,7 @@ local function is_folded(buffer, line)
   end)
 end
 
-local function count_line_without_folded(buffer, from_lnum, to_lnum)
+local function count_line_folded(buffer, from_lnum, to_lnum)
   local updown = from_lnum > to_lnum and -1 or 1
   local cnt = 0
 
@@ -93,7 +93,7 @@ function M.render_range(buffer, from_lnum, to_lnum, speed)
   local goal_lnum = to_lnum - updown
   -- 距離を求める
   local dist = math.abs(from_lnum - to_lnum)
-  dist = dist - count_line_without_folded(buffer, from_lnum, to_lnum)
+  dist = dist - count_line_folded(buffer, from_lnum, to_lnum)
 
   -- 1行あたりに使える秒数(ミリ)
   local line_msec = math.floor(speed / dist)
